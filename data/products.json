@@ -1,0 +1,56 @@
+[
+  {
+    "id": "custom-skin",
+    "title": "Кастомный Скин",
+    "category": "skin",
+    "price": "300 ₽",
+    "thumbnail": "skinDummy.png",
+    "images": [
+      "skinDummy.png"
+    ],
+    "modelUrl": "",
+    "description": "Нарисую уникальный скин для Minecraft по твоему описанию или референсам. Детально прорисую тени, градиенты и все мелочи — одежда, аксессуары, причёска. Твой персонаж будет реально выделяться на сервере.",
+    "specs": {
+      "resolution": "64x64 / HD",
+      "formats": "PNG",
+      "type": "Steve / Alex",
+      "shading": "Ручной"
+    }
+  },
+  {
+    "id": "custom-render",
+    "title": "Minecraft Рендер",
+    "category": "render",
+    "price": "450 ₽",
+    "thumbnail": "RenderСSerqay.png",
+    "images": [
+      "RenderСSerqay.png"
+    ],
+    "modelUrl": "",
+    "description": "Сделаю красивый рендер твоего Minecraft-персонажа или сцены. Поставлю свет, настрою материалы, добавлю эффекты и сделаю постобработку. Получишь сочную картинку на аватарку, баннер или для соцсетей.",
+    "specs": {
+      "resolution": "3840x2160 (4K)",
+      "renderer": "Cycles / Eevee",
+      "formats": "PNG, JPEG",
+      "ratio": "Любой"
+    }
+  },
+  {
+    "id": "custom-model",
+    "title": "3D Модель / Ассет",
+    "category": "3d-model",
+    "price": "от 500 ₽",
+    "thumbnail": "ModelDummy.png",
+    "images": [
+      "ModelDummy.png"
+    ],
+    "modelUrl": "",
+    "description": "Замоделю что угодно по твоим чертежам или референсам: игровые пропсы, персонажей, окружение. Правильная сетка, развертка и PBR-текстуры. Формат на выходе — какой скажешь.",
+    "specs": {
+      "polygons": "По запросу",
+      "formats": "FBX, OBJ, BLEND, GLTF",
+      "textures": "До 4K PBR",
+      "rigged": "По запросу"
+    }
+  }
+]

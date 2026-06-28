@@ -1,0 +1,1557 @@
+/* --- Шрифты и системные настройки iOS --- */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--system-background, #000000); /* Фирменный темно-пурпурный фон */
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Compact Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  line-height: 1.4;
+}
+
+/* --- Переменные iOS Dark Theme (Purple Edition) --- */
+:root {
+  --system-background: #08020d;
+  --secondary-system-background: #180e22;
+  --tertiary-system-background: #281734;
+  
+  --label-primary: #ffffff;
+  --label-secondary: #a9a2b5; /* Лавандово-серый */
+  --label-tertiary: #523f60;
+  
+  --system-blue: #bf5af2; /* iOS Purple */
+  --system-blue-rgb: 191, 90, 242;
+  --system-red: #ff453a;
+  --system-green: #30d158;
+  
+  --separator: rgba(191, 90, 242, 0.18);
+  --modal-overlay-bg: rgba(0, 0, 0, 0.85);
+  
+  --transition-ios: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* --- Скроллбар (Минималистичный iOS стиль) --- */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* --- Навигация (iOS Navigation Bar с сильным размытием) --- */
+header {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1100px;
+  z-index: 1000;
+  background: rgba(8, 2, 13, 0.55);
+  backdrop-filter: saturate(180%) blur(25px);
+  -webkit-backdrop-filter: saturate(180%) blur(25px);
+  border: 0.5px solid rgba(191, 90, 242, 0.2);
+  border-radius: 24px;
+  padding: 0.6rem 2.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 10px 45px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.08);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+header:hover {
+  border-color: rgba(191, 90, 242, 0.35);
+  box-shadow: 0 12px 50px rgba(0,0,0,0.75), 0 0 15px rgba(191, 90, 242, 0.1);
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: -0.5px;
+  color: var(--label-primary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.logo span {
+  color: var(--system-blue);
+}
+
+nav {
+  display: flex;
+  gap: 1.8rem;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--label-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: var(--transition-ios);
+}
+
+nav a:hover {
+  color: var(--system-blue);
+}
+
+.sound-btn {
+  background: transparent;
+  border: none;
+  color: var(--label-secondary);
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-ios);
+  outline: none;
+}
+
+.sound-btn:hover {
+  color: var(--system-blue);
+  transform: scale(1.15);
+}
+
+.sound-btn svg {
+  display: block;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sound-btn.sound-muted {
+  color: var(--label-tertiary);
+}
+
+.sound-btn.sound-muted:hover {
+  color: var(--system-red);
+}
+
+/* --- Герой Секция (В стиле презентаций Apple) --- */
+.hero {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8%;
+  padding-top: 90px;
+  gap: 3rem;
+  position: relative;
+  background: radial-gradient(circle at top, #2b1141 0%, #000000 70%);
+}
+
+.hero-content {
+  flex: 1.1;
+  max-width: 580px;
+  z-index: 10;
+}
+
+.hero-tagline {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--system-blue);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.8rem;
+  display: inline-block;
+}
+
+.hero-title {
+  font-size: clamp(2.3rem, 4.5vw, 4rem);
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  color: var(--label-primary);
+  margin-bottom: 1.2rem;
+}
+
+.hero-desc {
+  color: var(--label-secondary);
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
+.hero-cta-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* --- Кнопки iOS --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.8rem 1.8rem;
+  border-radius: 12px; /* iOS стандарт скругления */
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.btn-primary {
+  background-color: var(--system-blue);
+  color: #ffffff;
+  border: none;
+}
+
+.btn-primary:hover {
+  opacity: 1;
+  transform: translateY(-2px) rotate(-1.5deg) scale(1.03);
+  box-shadow: 0 8px 25px rgba(191, 90, 242, 0.45);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-system-background);
+  color: var(--system-blue);
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: var(--tertiary-system-background);
+  transform: translateY(-2px) rotate(1.5deg) scale(1.03);
+  box-shadow: 0 8px 20px rgba(191, 90, 242, 0.15);
+}
+
+/* Декоративный 3D холст справа */
+.hero-visual {
+  flex: 1.2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 600px;
+  position: relative;
+  z-index: 5;
+}
+
+.hero-visual-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* --- Секция Каталога (В стиле App Store) --- */
+.store-section {
+  padding: 6rem 8% 4rem 8%;
+  background-color: #000000;
+}
+
+.section-header {
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.section-subtitle {
+  color: var(--label-secondary);
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+.section-title {
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+/* Переключатель вкладок iOS (Segmented Control) */
+.filter-tabs {
+  display: inline-flex;
+  background-color: rgba(24, 14, 34, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 3px;
+  border-radius: 20px;
+  margin-top: 1.5rem;
+  border: 0.5px solid rgba(191, 90, 242, 0.15);
+}
+
+.filter-tab {
+  background: transparent;
+  border: none;
+  color: var(--label-secondary);
+  padding: 0.6rem 1.6rem;
+  border-radius: 17px;
+  cursor: pointer;
+  font-size: 0.86rem;
+  font-weight: 600;
+  transition: var(--transition-ios);
+}
+
+.filter-tab.active {
+  background-color: rgba(191, 90, 242, 0.18);
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  border: 0.5px solid rgba(191, 90, 242, 0.25);
+}
+
+/* Сетка карточек */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2.2rem;
+  margin-top: 2rem;
+}
+
+/* Карточка товара в стиле Today в App Store */
+.product-card {
+  background: rgba(24, 14, 34, 0.45);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 0.5px solid rgba(191, 90, 242, 0.15);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 10px 30px rgba(0, 0, 0, 0.4);
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.product-card:hover {
+  background: rgba(40, 23, 52, 0.35);
+  border-color: rgba(191, 90, 242, 0.4);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(191, 90, 242, 0.2);
+}
+
+.product-image-container {
+  width: 100%;
+  height: 260px;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at center, rgba(191, 90, 242, 0.15) 0%, rgba(8, 2, 13, 0.8) 100%), #0c0c0e;
+  border-bottom: 0.5px solid rgba(191, 90, 242, 0.12);
+}
+
+.product-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 16px;
+  box-sizing: border-box;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.product-card:hover .product-card-img {
+  transform: scale(1.06);
+}
+
+/* Заглушка изображения */
+.product-image-fallback {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1c1c1e, #000);
+  gap: 10px;
+  color: var(--label-secondary);
+}
+
+.product-image-fallback svg {
+  stroke: var(--system-blue);
+}
+
+.product-image-fallback span {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Тег категории */
+.product-tag {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 5;
+  background: rgba(8, 2, 13, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tag-model { color: #d182ff; }
+.tag-render { color: #5ef286; }
+.tag-skin {
+  color: #5eaeff;
+  font-family: 'VT323', monospace;
+  font-size: 1.15rem;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  padding: 3px 10px 4px 10px;
+}
+
+/* Контент карточки */
+.product-info {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  margin-bottom: 0.5rem;
+  color: var(--label-primary);
+}
+
+/* Футер карточки */
+.product-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 0.8rem;
+}
+
+.product-price {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--label-primary);
+  letter-spacing: -0.2px;
+}
+
+.product-price span {
+  color: #5ef286;
+}
+
+/* Кнопка GET */
+.btn-card {
+  background: rgba(191, 90, 242, 0.12);
+  color: #d182ff;
+  padding: 0.5rem 1.6rem;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border: 0.5px solid rgba(191, 90, 242, 0.2);
+  text-transform: uppercase;
+  transition: var(--transition-ios);
+  cursor: pointer;
+}
+
+
+/* --- Секция Портфолио --- */
+.portfolio-section {
+  padding: 6rem 8% 4rem 8%;
+  background-color: #000000;
+  border-top: 0.5px solid var(--separator);
+}
+
+.portfolio-grid {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 1.5rem 0;
+  margin-top: 2rem;
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+/* Бесконечный трек-поезд */
+.portfolio-track {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  animation: trainScroll 38s linear infinite;
+  will-change: transform;
+}
+
+.portfolio-track:hover {
+  animation-play-state: paused;
+}
+
+.portfolio-track.train-stopped {
+  animation-play-state: paused;
+}
+
+@keyframes trainScroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Карточка работы портфолио в поезде */
+.portfolio-item {
+  position: relative;
+  width: 320px;
+  height: 240px;
+  flex-shrink: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(24, 14, 34, 0.35);
+  border: 0.5px solid rgba(191, 90, 242, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, border-color 0.3s ease;
+}
+
+.portfolio-item:hover {
+  transform: scale(1.08) translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(191, 90, 242, 0.25);
+  border-color: rgba(191, 90, 242, 0.45);
+  z-index: 10;
+}
+
+.portfolio-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.portfolio-item:hover img {
+  transform: scale(1.08);
+}
+
+/* Оверлей с информацией при наведении */
+.portfolio-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.8rem 1.4rem 1.4rem;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.4) 60%, transparent 100%);
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.portfolio-item:hover .portfolio-overlay {
+  transform: translateY(0);
+}
+
+.portfolio-overlay h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+.portfolio-overlay span {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--system-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Тег категории на карточке портфолио */
+.portfolio-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 5;
+  background: rgba(8, 2, 13, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--system-blue);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.portfolio-item:hover .portfolio-tag {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Пустое состояние портфолио */
+.portfolio-empty-state {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
+  background: rgba(24, 14, 34, 0.2);
+  border: 1px dashed rgba(191, 90, 242, 0.2);
+  border-radius: 24px;
+  text-align: center;
+  gap: 1rem;
+}
+
+.portfolio-empty-state svg {
+  stroke: var(--label-tertiary);
+  opacity: 0.6;
+}
+
+.portfolio-empty-state h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--label-secondary);
+  margin: 0;
+}
+
+.portfolio-empty-state p {
+  font-size: 0.9rem;
+  color: var(--label-tertiary);
+  margin: 0;
+  max-width: 360px;
+}
+
+/* Лайтбокс (просмотр работы в полноэкранном режиме) */
+.portfolio-lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 3000;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  cursor: zoom-out;
+}
+
+.portfolio-lightbox.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.portfolio-lightbox img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  transform: scale(0.92);
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.portfolio-lightbox.active img {
+  transform: scale(1);
+}
+
+.lightbox-info {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #fff;
+}
+
+.lightbox-info h4 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.lightbox-info span {
+  font-size: 0.8rem;
+  color: var(--label-secondary);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-ios);
+  z-index: 10;
+}
+
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+/* --- Секция Контактов --- */
+.contact-section {
+  padding: 5rem 8% 6rem 8%;
+  background-color: #000000;
+  border-top: 0.5px solid var(--separator);
+}
+
+.contact-info h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.contact-info p {
+  color: var(--label-secondary);
+  max-width: 600px;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-btn {
+  background-color: var(--secondary-system-background);
+  border: 0.5px solid var(--separator);
+  color: var(--label-primary);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-ios);
+}
+
+.social-btn:hover {
+  background-color: var(--tertiary-system-background);
+  color: var(--system-blue);
+}
+
+/* --- Подвал --- */
+footer {
+  border-top: 0.5px solid var(--separator);
+  padding: 2rem 8%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--label-secondary);
+  font-size: 0.85rem;
+  background-color: #000000;
+}
+
+footer span {
+  color: var(--label-primary);
+}
+
+/* --- МОДАЛЬНОЕ ОКНО (В стиле iOS Bottom Sheet) --- */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2000;
+  display: flex;
+  align-items: flex-end; /* Выравнивание снизу (Bottom Sheet) */
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.modal.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--modal-overlay-bg);
+}
+
+/* Нижняя панель (Bottom Sheet) */
+.modal-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 850px;
+  height: 90vh; /* Занимает 90% высоты экрана */
+  background: #1c1c1e; /* Цвет iOS Secondary System Background */
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+  transform: translateY(100%); /* Выезд снизу */
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* iOS Grabber (полоска наверху листа) */
+.modal-wrapper::before {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 5px;
+  background-color: var(--label-tertiary);
+  border-radius: 3px;
+  margin: 10px auto;
+  flex-shrink: 0;
+}
+
+.modal.active .modal-wrapper {
+  transform: translateY(0);
+}
+
+/* Закрыть (iOS круглая серая кнопка в углу) */
+.modal-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: var(--tertiary-system-background);
+  border: none;
+  color: var(--label-secondary);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  transition: var(--transition-ios);
+}
+
+.modal-close-btn:hover {
+  background-color: var(--label-tertiary);
+  color: #ffffff;
+}
+
+/* Содержимое листа */
+.modal-visual-pane {
+  width: 100%;
+  height: 45vh; /* Верхняя часть - визуал */
+  background-color: #0c0c0e;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Вкладки 3D / Галерея (iOS Segmented Control) */
+.modal-tabs {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  background-color: rgba(28, 28, 30, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 2px;
+  border-radius: 8px;
+  display: inline-flex;
+}
+
+.modal-tab {
+  background: transparent;
+  border: none;
+  color: var(--label-secondary);
+  padding: 5px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: var(--transition-ios);
+}
+
+.modal-tab.active {
+  background-color: #3a3a3c;
+  color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Вьюпорты */
+.modal-viewport-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.modal-3d-viewport, .modal-gallery-viewport {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+.modal-3d-viewport.active, .modal-gallery-viewport.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Стрелки в стиле iOS */
+.gallery-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0,0,0,0.5);
+  border: none;
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.arrow-left { left: 10px; }
+.arrow-right { right: 10px; }
+
+/* Нижняя панель описания (Инфо и ТТХ в стиле App Store) */
+.modal-info-pane {
+  flex-grow: 1;
+  padding: 1.5rem 2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* App Header с иконкой сквиркл и кнопкой GET */
+.app-header {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.app-icon {
+  width: 72px;
+  height: 72px;
+  background-color: #0c0c0e;
+  border-radius: 22%; /* Фирменный скругленный сквиркл Apple */
+  box-shadow: inset 0 0 1px rgba(255,255,255,0.2), 0 4px 10px rgba(0,0,0,0.3);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+.app-metadata {
+  flex-grow: 1;
+}
+
+.modal-product-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 2px;
+}
+
+.app-category {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--label-secondary);
+}
+
+.modal-product-price {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--system-green);
+  margin-top: 2px;
+}
+
+/* Кнопка GET */
+.btn-get {
+  background-color: var(--system-blue);
+  color: #ffffff;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 0.4rem 1.6rem;
+  border-radius: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+  will-change: transform;
+}
+
+.btn-get:hover {
+  opacity: 1;
+  transform: scale(1.06) rotate(-2deg);
+  box-shadow: 0 4px 12px rgba(191, 90, 242, 0.4);
+}
+
+.modal-product-desc {
+  font-size: 0.92rem;
+  color: var(--label-secondary);
+  line-height: 1.45;
+  margin-bottom: 1.8rem;
+}
+
+/* Характеристики в стиле таблицы App Store Information */
+.modal-specs-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+
+.specs-grid {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--secondary-system-background);
+  border-radius: 12px;
+  padding: 0 1rem;
+  margin-bottom: 2rem;
+}
+
+.spec-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 0.5px solid var(--separator);
+}
+
+.spec-item:last-child {
+  border-bottom: none;
+}
+
+.spec-label {
+  font-size: 0.9rem;
+  color: var(--label-secondary);
+}
+
+.spec-value {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--label-primary);
+}
+
+/* --- Загрузчик --- */
+.model-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0c0c0e;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 15;
+  transition: opacity 0.3s ease;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--system-blue);
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 0.8rem;
+}
+
+.model-loader span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--label-secondary);
+}
+
+.viewer-instruction {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-size: 0.72rem;
+  color: var(--label-secondary);
+  background: rgba(0,0,0,0.6);
+  padding: 4px 10px;
+  border-radius: 20px;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* --- Адаптивность для Bottom Sheet --- */
+@media (min-width: 851px) {
+  /* На десктопе модальное окно выглядит как классическое iOS оверлейное окно по центру */
+  .modal {
+    align-items: center;
+  }
+  
+  .modal-wrapper {
+    height: 80vh;
+    max-height: 700px;
+    border-radius: 22px; /* Полноценные скругленные углы по кругу */
+    flex-direction: row; /* Горизонтальное деление на десктопе */
+  }
+  
+  .modal-wrapper::before {
+    display: none; /* Убираем grabber */
+  }
+  
+  .modal-visual-pane {
+    flex: 1.1;
+    height: 100%;
+    border-right: 0.5px solid var(--separator);
+  }
+  
+  .modal-info-pane {
+    flex: 0.9;
+    height: 100%;
+    padding: 2.5rem 2rem;
+  }
+}
+
+@media (max-width: 968px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding-top: 110px;
+    padding-bottom: 30px;
+    gap: 2rem;
+  }
+  
+  .hero-visual {
+    width: 100%;
+    height: 350px;
+  }
+  
+  .hero-cta-group {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  header {
+    width: 85%;
+    padding: 0.6rem 1.5rem;
+    top: 12px;
+  }
+  
+  nav {
+    display: none;
+  }
+  
+  .hero-title {
+    font-size: 2.1rem;
+  }
+  
+  .store-section {
+    padding: 4rem 5% 3rem 5%;
+  }
+  
+  .contact-section {
+    padding: 4rem 5%;
+  }
+  
+  footer {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    padding: 1.5rem 5%;
+  }
+}
+
+/* --- Встроенный визуальный редактор (CMS) --- */
+.editor-toggle-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(191, 90, 242, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(191, 90, 242, 0.25);
+  color: #d182ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2500;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  transition: var(--transition-ios);
+}
+
+.editor-toggle-btn:hover {
+  transform: scale(1.08) rotate(45deg);
+  background: rgba(191, 90, 242, 0.25);
+  color: #ffffff;
+  border-color: rgba(191, 90, 242, 0.5);
+  box-shadow: 0 4px 25px rgba(191, 90, 242, 0.35);
+}
+
+.editor-panel {
+  position: fixed;
+  bottom: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 700px;
+  background: rgba(28, 28, 30, 0.85);
+  backdrop-filter: saturate(180%) blur(30px);
+  -webkit-backdrop-filter: saturate(180%) blur(30px);
+  border-radius: 20px;
+  border: 0.5px solid rgba(191, 90, 242, 0.25);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  z-index: 2400;
+  transition: bottom 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  padding: 1.2rem;
+  box-sizing: border-box;
+}
+
+.editor-panel.active {
+  bottom: 24px;
+}
+
+.editor-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  border-bottom: 0.5px solid rgba(191, 90, 242, 0.12);
+  padding-bottom: 0.5rem;
+}
+
+.editor-panel-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.2px;
+}
+
+.editor-panel-close {
+  background: transparent;
+  border: none;
+  color: var(--label-secondary);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: var(--transition-ios);
+}
+
+.editor-panel-close:hover {
+  color: #fff;
+}
+
+.editor-panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.editor-actions {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.btn-editor-action {
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.editor-hint {
+  font-size: 0.76rem;
+  color: var(--label-secondary);
+  text-align: center;
+  margin-top: 0.4rem;
+}
+
+[contenteditable="true"] {
+  outline: none;
+  transition: var(--transition-ios);
+  position: relative;
+}
+
+[contenteditable="true"]:hover {
+  background: rgba(191, 90, 242, 0.08);
+  box-shadow: 0 0 0 4px rgba(191, 90, 242, 0.15);
+  border-radius: 6px;
+  cursor: text;
+}
+
+[contenteditable="true"]:focus {
+  background: rgba(191, 90, 242, 0.12);
+  box-shadow: 0 0 0 6px rgba(191, 90, 242, 0.35);
+  border-radius: 6px;
+}
+
+.product-card-edit-controls {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  display: none;
+  gap: 6px;
+}
+
+.editor-mode-active .product-card-edit-controls {
+  display: flex;
+}
+
+.btn-card-control {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(8, 2, 13, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-ios);
+}
+
+.btn-card-control:hover {
+  transform: scale(1.1);
+}
+
+.btn-card-delete:hover {
+  color: var(--system-red);
+  border-color: rgba(255, 69, 58, 0.4);
+  background: rgba(255, 69, 58, 0.15);
+}
+
+.btn-card-edit-props:hover {
+  color: var(--system-blue);
+  border-color: rgba(191, 90, 242, 0.4);
+  background: rgba(191, 90, 242, 0.15);
+}
+
+/* --- Стилизация под Minecraft (Пасхалка для Кастомного Скина) --- */
+
+/* 1. Карточка скина в каталоге */
+.minecraft-card:hover {
+  box-shadow: 4px 4px 0px #000 !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* 2. Minecraft тема для модального окна */
+.theme-minecraft {
+  font-family: 'VT323', monospace;
+  letter-spacing: 0.5px;
+}
+
+.theme-minecraft #modal-title {
+  font-family: 'VT323', monospace;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  color: #fff;
+  text-shadow: 2px 2px 0px #3f3f3f;
+}
+
+.theme-minecraft #modal-app-category {
+  font-family: 'VT323', monospace;
+  font-size: 1.3rem;
+  color: #5eaeff;
+}
+
+.theme-minecraft #modal-price {
+  font-family: 'VT323', monospace;
+  font-size: 1.6rem;
+  color: #5ef286;
+  text-shadow: 1px 1px 0px #1e5f30;
+}
+
+.theme-minecraft #modal-desc {
+  font-family: 'VT323', monospace;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  color: #e0e0e0;
+}
+
+.theme-minecraft .modal-specs-title {
+  font-family: 'VT323', monospace;
+  font-size: 1.4rem;
+  color: #d182ff;
+  text-transform: uppercase;
+}
+
+/* Спецификации в стиле Minecraft Инвентаря */
+.theme-minecraft .specs-grid {
+  background-color: #2c2c2d;
+  border: 3px double #3c3c3d;
+  box-shadow: inset -2px -2px 0px #1e1e1f, inset 2px 2px 0px #8b8b8b;
+  border-radius: 0px;
+  padding: 0.5rem 1rem;
+}
+
+.theme-minecraft .spec-item {
+  border-bottom: 2px dashed #3c3c3d;
+  padding: 0.6rem 0;
+}
+
+.theme-minecraft .spec-label {
+  font-size: 1.25rem;
+  color: #aaaaaa;
+}
+
+.theme-minecraft .spec-value {
+  font-size: 1.25rem;
+  color: #ffffff;
+  text-shadow: 1px 1px 0px #3f3f3f;
+}
+
+/* Кнопка GET в стиле меню Minecraft */
+.theme-minecraft .btn-get {
+  background-color: #707070;
+  border: 2px solid #000;
+  box-shadow: inset -2px -2px 0px #3d3d3d, inset 2px 2px 0px #a0a0a0;
+  border-radius: 0px;
+  color: #e0e0e0;
+  font-family: 'VT323', monospace;
+  font-size: 1.4rem;
+  font-weight: normal;
+  text-transform: uppercase;
+  padding: 0.5rem 2rem;
+  text-shadow: 2px 2px 0px #3f3f3f;
+  transition: none;
+  cursor: pointer;
+}
+
+.theme-minecraft .btn-get:hover {
+  background-color: #5eaeff;
+  color: #fff;
+  border-color: #000;
+  box-shadow: inset -2px -2px 0px #2a5f9e, inset 2px 2px 0px #a5d3ff;
+  transform: none;
+}
+
+/* --- Анимации появления при прокрутке (Scroll Reveal) --- */
+
+.reveal-up, .reveal-left, .reveal-right, .reveal-scale {
+  opacity: 0;
+  will-change: transform, opacity;
+  transition: opacity 0.85s cubic-bezier(0.25, 1, 0.5, 1), transform 0.85s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* 1. Появление снизу вверх с легким 3D наклоном на зрителя */
+.reveal-up {
+  transform: translateY(50px) perspective(1000px) rotateX(12deg) scale(0.96);
+}
+
+.reveal-up.revealed {
+  opacity: 1;
+  transform: translateY(0) perspective(1000px) rotateX(0deg) scale(1);
+}
+
+/* 2. Выезжание слева */
+.reveal-left {
+  transform: translateX(-60px);
+}
+
+.reveal-left.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 3. Выезжание справа */
+.reveal-right {
+  transform: translateX(60px);
+}
+
+.reveal-right.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 4. Мягкое масштабирование из глубины */
+.reveal-scale {
+  transform: scale(0.9) translateY(20px);
+}
+
+.reveal-scale.revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Каскадная задержка для элементов в сетках */
+.products-grid > :nth-child(1) { transition-delay: 0.05s; }
+.products-grid > :nth-child(2) { transition-delay: 0.15s; }
+.products-grid > :nth-child(3) { transition-delay: 0.25s; }
+.products-grid > :nth-child(4) { transition-delay: 0.35s; }
+.products-grid > :nth-child(5) { transition-delay: 0.45s; }
+
+.portfolio-grid > :nth-child(1) { transition-delay: 0.05s; }
+.portfolio-grid > :nth-child(2) { transition-delay: 0.1s; }
+.portfolio-grid > :nth-child(3) { transition-delay: 0.15s; }
+.portfolio-grid > :nth-child(4) { transition-delay: 0.2s; }
+.portfolio-grid > :nth-child(5) { transition-delay: 0.25s; }
+.portfolio-grid > :nth-child(6) { transition-delay: 0.3s; }
+

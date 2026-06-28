@@ -1,0 +1,74 @@
+[
+  {
+    "id": "portfolio-oketra",
+    "title": "Oketra",
+    "category": "3D Модель",
+    "image": "assets/renders/render1.png"
+  },
+  {
+    "id": "portfolio-serqayrend",
+    "title": "serqayrend",
+    "category": "Рендер",
+    "image": "assets/renders/render2.png"
+  },
+  {
+    "id": "portfolio-finalrender",
+    "title": "FinalRender",
+    "category": "Рендер",
+    "image": "assets/renders/render3.png"
+  },
+  {
+    "id": "portfolio-steveps",
+    "title": "StevePS",
+    "category": "3D Модель",
+    "image": "assets/renders/render4.png"
+  },
+  {
+    "id": "portfolio-postermimi",
+    "title": "PosterMIMI",
+    "category": "Рендер",
+    "image": "assets/renders/render5.png"
+  },
+  {
+    "id": "portfolio-allayfem",
+    "title": "allayFem",
+    "category": "3D Модель",
+    "image": "assets/renders/render7.png"
+  },
+  {
+    "id": "portfolio-homadik",
+    "title": "homadikDonatikfix",
+    "category": "3D Модель",
+    "image": "assets/renders/render8.png"
+  },
+  {
+    "id": "portfolio-rushhiper",
+    "title": "rushhiper",
+    "category": "Рендер",
+    "image": "assets/renders/render9.png"
+  },
+  {
+    "id": "portfolio-secret",
+    "title": "secret render",
+    "category": "Рендер",
+    "image": "assets/renders/render10.png"
+  },
+  {
+    "id": "portfolio-spice42",
+    "title": "Spice42",
+    "category": "3D Модель",
+    "image": "assets/renders/Spice42 1.png"
+  },
+  {
+    "id": "portfolio-gorse",
+    "title": "render gorse",
+    "category": "Рендер",
+    "image": "assets/renders/Untitled42 1.png"
+  },
+  {
+    "id": "portfolio-megabox",
+    "title": "MegaBox",
+    "category": "3D Модель",
+    "image": "assets/renders/Тайна мощне сиське 1 (2).png"
+  }
+]
