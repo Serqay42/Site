@@ -206,6 +206,46 @@ function playActionSuccess() {
   }, true);
 }
 
+// 6. Цифровой смех аниме-девочки (высокочастотные отрывистые импульсы)
+function playAnimeLaughter() {
+  playSound((ctx) => {
+    const now = ctx.currentTime;
+    const notes = [
+      { delay: 0.0, freq: 580, dur: 0.08 },
+      { delay: 0.1, freq: 640, dur: 0.08 },
+      { delay: 0.2, freq: 720, dur: 0.08 },
+      { delay: 0.3, freq: 800, dur: 0.12 },
+    ];
+    
+    notes.forEach((note) => {
+      const osc = ctx.createOscillator();
+      const gainNode = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+      
+      osc.type = 'triangle';
+      
+      const tStart = now + note.delay;
+      
+      osc.frequency.setValueAtTime(note.freq, tStart);
+      osc.frequency.exponentialRampToValueAtTime(note.freq * 1.15, tStart + note.dur);
+      
+      filter.type = 'peaking';
+      filter.frequency.setValueAtTime(note.freq * 1.5, tStart);
+      
+      gainNode.gain.setValueAtTime(0.001, tStart);
+      gainNode.gain.linearRampToValueAtTime(0.06, tStart + 0.02);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, tStart + note.dur);
+      
+      osc.connect(filter);
+      filter.connect(gainNode);
+      gainNode.connect(ctx.destination);
+      
+      osc.start(tStart);
+      osc.stop(tStart + note.dur + 0.02);
+    });
+  }, true);
+}
+
 // --- Обработка событий и делегирование ---
 
 let lastHoveredElement = null;
@@ -324,5 +364,6 @@ window.soundDesign = {
   playModalOpen,
   playModalClose,
   playActionSuccess,
+  playAnimeLaughter,
   toggleSound
 };

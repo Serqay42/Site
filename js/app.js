@@ -385,6 +385,126 @@ function setupEventListeners() {
       window.open(`https://t.me/${OWNER_CONFIG.telegramUsername}?text=${messageText}`, '_blank');
     }
   });
+
+  // Клик по логотипу для перемещения вниз и вызова аниме-девочки
+  const logoText = document.getElementById('logo-text');
+  const animeContainer = document.getElementById('anime-girl-container');
+  const animeImg = document.getElementById('anime-girl-img');
+
+  if (logoText && animeContainer) {
+    logoText.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      // Плавно скроллим в самый низ сайта
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth'
+      });
+
+      // Прячем логотип
+      logoText.classList.add('logo-hidden');
+
+      // Показываем контейнер аниме-девочки
+      animeContainer.classList.add('active');
+
+      // Воспроизводим аниме смех
+      if (window.soundDesign && window.soundDesign.playAnimeLaughter) {
+        window.soundDesign.playAnimeLaughter();
+      }
+
+      // Добавим легкий всплеск на аватарку
+      animeContainer.style.animation = 'none';
+      setTimeout(() => {
+        animeContainer.style.animation = 'avatarBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both';
+      }, 10);
+    });
+
+    // Обработка долгого тапа
+    let pressTimer = null;
+    let isLongPress = false;
+    let isRewardState = false;
+
+    const startPress = (e) => {
+      // Игнорируем правый клик
+      if (e.type === 'mousedown' && e.button !== 0) return;
+      
+      isLongPress = false;
+      animeContainer.classList.add('pressing');
+
+      pressTimer = setTimeout(() => {
+        isLongPress = true;
+        animeContainer.classList.remove('pressing');
+        
+        // Меняем изображение на reward
+        isRewardState = !isRewardState;
+        animeImg.src = isRewardState ? 'Girl/reward.png' : 'Girl/base.png';
+        
+        // Звуковой эффект успеха
+        if (window.soundDesign && window.soundDesign.playActionSuccess) {
+          window.soundDesign.playActionSuccess();
+        }
+
+        // Взрывной визуальный эффект
+        animeContainer.animate([
+          { transform: 'translateY(-50%) scale(1)', boxShadow: '0 0 15px rgba(191, 90, 242, 0.3)' },
+          { transform: 'translateY(-50%) scale(1.3)', boxShadow: '0 0 40px rgba(191, 90, 242, 1)' },
+          { transform: 'translateY(-50%) scale(1)', boxShadow: '0 0 15px rgba(191, 90, 242, 0.3)' }
+        ], {
+          duration: 500,
+          easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
+        });
+      }, 700); // 700ms для долгого тапа
+    };
+
+    const cancelPress = () => {
+      if (pressTimer) {
+        clearTimeout(pressTimer);
+        pressTimer = null;
+      }
+      animeContainer.classList.remove('pressing');
+    };
+
+    const clickOrRelease = (e) => {
+      cancelPress();
+      // Если это был короткий клик, и мы в состоянии reward, возвращаем base
+      if (!isLongPress && e.type !== 'mouseleave') {
+        if (isRewardState) {
+          isRewardState = false;
+          animeImg.src = 'Girl/base.png';
+          if (window.soundDesign && window.soundDesign.playBtnClick) {
+            window.soundDesign.playBtnClick();
+          }
+        } else {
+          // Если кликнули по базовой, сделаем смешной прыжок и посмеемся
+          if (window.soundDesign && window.soundDesign.playAnimeLaughter) {
+            window.soundDesign.playAnimeLaughter();
+          }
+          animeContainer.animate([
+            { transform: 'translateY(-50%) scale(1) rotate(0deg)' },
+            { transform: 'translateY(-65%) scale(1.1) rotate(-15deg)' },
+            { transform: 'translateY(-50%) scale(1) rotate(0deg)' }
+          ], {
+            duration: 400,
+            easing: 'ease-out'
+          });
+        }
+      }
+    };
+
+    // Слушатели событий мыши
+    animeContainer.addEventListener('mousedown', startPress);
+    animeContainer.addEventListener('mouseup', clickOrRelease);
+    animeContainer.addEventListener('mouseleave', cancelPress);
+
+    // Слушатели сенсорных событий
+    animeContainer.addEventListener('touchstart', (e) => {
+      startPress(e);
+    }, { passive: true });
+    animeContainer.addEventListener('touchend', (e) => {
+      clickOrRelease(e);
+    }, { passive: true });
+    animeContainer.addEventListener('touchcancel', cancelPress);
+  }
 }
 
 // --- Открытие модального окна деталей товара ---
