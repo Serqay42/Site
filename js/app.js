@@ -405,7 +405,7 @@ function openProductModal(product) {
   document.getElementById('modal-title').textContent = product.title;
   document.getElementById('modal-price').innerHTML = product.price.toLowerCase() === 'free' ? '<span>FREE</span>' : product.price;
   document.getElementById('modal-desc').textContent = product.description;
-  document.getElementById('modal-app-icon').src = product.thumbnail;
+  document.getElementById('modal-app-icon').src = encodeURI(product.thumbnail);
 
   let categoryText = 'Рендер';
   if (product.category === '3d-model') {
@@ -443,7 +443,7 @@ function updateGalleryImage() {
   const nextBtn = document.getElementById('gallery-next');
 
   if (currentProduct && currentProduct.images && currentProduct.images.length > 0) {
-    imgElement.src = currentProduct.images[currentImageIndex];
+    imgElement.src = encodeURI(currentProduct.images[currentImageIndex]);
     imgElement.style.display = 'block';
 
     // Показываем/скрываем стрелки навигации
@@ -1054,7 +1054,7 @@ function openPortfolioLightbox(item) {
   const lightbox = document.getElementById('portfolio-lightbox');
   if (!lightbox) return;
 
-  document.getElementById('lightbox-img').src = item.image;
+  document.getElementById('lightbox-img').src = encodeURI(item.image);
   document.getElementById('lightbox-title').textContent = item.title;
   document.getElementById('lightbox-category').textContent = item.category || '';
 

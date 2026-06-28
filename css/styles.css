@@ -493,9 +493,9 @@ nav a:hover {
   will-change: transform;
 }
 
-
-.portfolio-track.train-stopped {
-  animation-play-state: paused;
+.portfolio-track.revealed {
+  transition: opacity 0.85s cubic-bezier(0.25, 1, 0.5, 1), transform 0s !important;
+  transition-delay: 0s !important;
 }
 
 @keyframes trainScroll {
