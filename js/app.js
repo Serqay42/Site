@@ -386,138 +386,83 @@ function setupEventListeners() {
     }
   });
 
-  // Клик по логотипу для перемещения вниз и вызова аниме-девочки
-  const logoText = document.getElementById('logo-text');
+  // Логика пасхалки на большом рендере (RenderCSerqay)
   const heroAvatar = document.getElementById('hero-avatar');
   const heroAnimeGirl = document.getElementById('hero-anime-girl');
 
-  if (logoText && heroAvatar && heroAnimeGirl) {
-    logoText.addEventListener('click', (e) => {
-      e.preventDefault();
-      
-      // Плавно скроллим в самый низ сайта
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: 'smooth'
-      });
-
-      // Добавляем класс улетания для большого аватара
+  if (heroAvatar && heroAnimeGirl) {
+    heroAvatar.style.cursor = 'pointer';
+    
+    // Функция активации пасхалки (позволяет тестировать из консоли через window.forceAnimeGirl())
+    const triggerAnimeGirlEasterEgg = () => {
       heroAvatar.classList.add('fly-down');
-
-      // Показываем большую аниме-девочку вместо него
       heroAnimeGirl.classList.add('active');
-
-      // Воспроизводим аниме смех
       if (window.soundDesign && window.soundDesign.playAnimeLaughter) {
         window.soundDesign.playAnimeLaughter();
       }
+    };
+    window.forceAnimeGirl = triggerAnimeGirlEasterEgg;
+
+    heroAvatar.addEventListener('click', () => {
+      // Шанс 1 к 1000 (0.001)
+      if (Math.random() < 0.001) {
+        triggerAnimeGirlEasterEgg();
+      } else {
+        // Обычный клик - легкий пружинящий эффект
+        heroAvatar.animate([
+          { transform: 'scale(1)' },
+          { transform: 'scale(0.97)' },
+          { transform: 'scale(1)' }
+        ], {
+          duration: 200,
+          easing: 'ease-out'
+        });
+      }
     });
 
-    // Обработка тапов (спам кликов и долгого тапа) для аниме-девочки
-    let clickCount = 0;
-    let clickTimeout = null;
-    let pressTimer = null;
-    let isLongPress = false;
+    // Обработка клика по аниме-девочке
     let isRewardState = false;
 
-    const triggerReward = () => {
-      isRewardState = true;
-      heroAnimeGirl.src = 'Girl/reward.png';
-      
-      if (window.soundDesign && window.soundDesign.playActionSuccess) {
-        window.soundDesign.playActionSuccess();
-      }
+    heroAnimeGirl.addEventListener('click', () => {
+      if (isRewardState) return;
 
-      // Сочный эффект переключения
-      heroAnimeGirl.animate([
-        { transform: 'scale(1) rotate(0deg)' },
-        { transform: 'scale(1.2) rotate(8deg)' },
-        { transform: 'scale(1) rotate(0deg)' }
-      ], {
-        duration: 500,
-        easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
-      });
-    };
-
-    const resetToBase = () => {
-      isRewardState = false;
-      heroAnimeGirl.src = 'Girl/base.png';
-      if (window.soundDesign && window.soundDesign.playBtnClick) {
-        window.soundDesign.playBtnClick();
-      }
-    };
-
-    // Детектор долгого зажатия
-    const startPress = (e) => {
-      if (e.type === 'mousedown' && e.button !== 0) return;
-      isLongPress = false;
-
-      pressTimer = setTimeout(() => {
-        isLongPress = true;
-        if (!isRewardState) {
-          triggerReward();
+      // При случайном нажатии (шанс 15%) меняет образ на reward
+      if (Math.random() < 0.15) {
+        isRewardState = true;
+        heroAnimeGirl.src = 'Girl/reward.png';
+        
+        if (window.soundDesign && window.soundDesign.playActionSuccess) {
+          window.soundDesign.playActionSuccess();
         }
-      }, 700);
-    };
 
-    const cancelPress = () => {
-      if (pressTimer) {
-        clearTimeout(pressTimer);
-        pressTimer = null;
-      }
-    };
+        // Сочный визуальный эффект переключения
+        heroAnimeGirl.animate([
+          { transform: 'scale(1) rotate(0deg)', filter: 'brightness(1)' },
+          { transform: 'scale(1.25) rotate(10deg)', filter: 'brightness(1.2) drop-shadow(0 0 30px #bf5af2)' },
+          { transform: 'scale(1) rotate(0deg)', filter: 'brightness(1)' }
+        ], {
+          duration: 600,
+          easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
+        });
 
-    const handleReleaseOrClick = (e) => {
-      cancelPress();
-      
-      // Если это не было долгое зажатие
-      if (!isLongPress && e.type !== 'mouseleave') {
-        if (isRewardState) {
-          resetToBase();
-        } else {
-          // Увеличиваем счетчик спам-кликов для перехода в reward
-          clickCount++;
-          
-          if (clickTimeout) clearTimeout(clickTimeout);
-          clickTimeout = setTimeout(() => {
-            clickCount = 0;
-          }, 1200); // сброс счетчика, если нет кликов 1.2 сек
-
-          if (clickCount >= 5) {
-            clickCount = 0;
-            if (clickTimeout) clearTimeout(clickTimeout);
-            triggerReward();
-          } else {
-            // Обычный короткий клик по базовой девочке - смех и анимация
-            if (window.soundDesign && window.soundDesign.playAnimeLaughter) {
-              window.soundDesign.playAnimeLaughter();
-            }
-            heroAnimeGirl.animate([
-              { transform: 'scale(1) rotate(0deg)' },
-              { transform: 'scale(1.08) rotate(-5deg)' },
-              { transform: 'scale(1) rotate(0deg)' }
-            ], {
-              duration: 350,
-              easing: 'ease-out'
-            });
-          }
+        // Больше тыкать нельзя (полная блокировка событий)
+        heroAnimeGirl.style.pointerEvents = 'none';
+        heroAnimeGirl.style.cursor = 'default';
+      } else {
+        // Обычный клик (неудачный ролл на reward) - прыжок и смех
+        if (window.soundDesign && window.soundDesign.playAnimeLaughter) {
+          window.soundDesign.playAnimeLaughter();
         }
+        heroAnimeGirl.animate([
+          { transform: 'scale(1) rotate(0deg)' },
+          { transform: 'scale(1.08) rotate(-5deg)' },
+          { transform: 'scale(1) rotate(0deg)' }
+        ], {
+          duration: 350,
+          easing: 'ease-out'
+        });
       }
-    };
-
-    // Мышь
-    heroAnimeGirl.addEventListener('mousedown', startPress);
-    heroAnimeGirl.addEventListener('mouseup', handleReleaseOrClick);
-    heroAnimeGirl.addEventListener('mouseleave', cancelPress);
-
-    // Тач
-    heroAnimeGirl.addEventListener('touchstart', (e) => {
-      startPress(e);
-    }, { passive: true });
-    heroAnimeGirl.addEventListener('touchend', (e) => {
-      handleReleaseOrClick(e);
-    }, { passive: true });
-    heroAnimeGirl.addEventListener('touchcancel', cancelPress);
+    });
   }
 }
 
