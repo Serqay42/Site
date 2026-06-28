@@ -960,7 +960,7 @@ function renderPortfolio(items) {
     card.className = 'portfolio-item';
     card.setAttribute('data-portfolio-id', item.id);
     card.innerHTML = `
-      <img src="${item.image}" alt="${item.title}" loading="lazy" onerror="this.style.display='none';">
+      <img src="${encodeURI(item.image)}" alt="${item.title}">
     `;
 
     // Клик — открытие лайтбокса
@@ -1008,8 +1008,12 @@ function renderPortfolio(items) {
 
     // Сбрасываем позицию при достижении половины ширины трека
     const halfWidth = track.scrollWidth / 2;
-    if (halfWidth > 0 && Math.abs(position) >= halfWidth) {
-      position = 0;
+    if (halfWidth > 100) {
+      if (Math.abs(position) >= halfWidth) {
+        position = 0;
+      }
+    } else {
+      position = 0; // Защита: сбрасываем в 0, если картинки еще не прогрузились
     }
 
     track.style.transform = `translate3d(${position}px, 0, 0)`;
