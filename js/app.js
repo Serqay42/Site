@@ -16,7 +16,7 @@ let isEditorMode = false;
 let editingProductId = null;
 
 // --- Инициализация при загрузке страницы ---
-document.addEventListener('DOMContentLoaded', () => {
+function runInitApp() {
   loadConfig().then(() => {
     loadProducts();
     loadPortfolio();
@@ -25,7 +25,13 @@ document.addEventListener('DOMContentLoaded', () => {
   setupPortfolioLightbox();
   initCardTilt();
   initEditor();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', runInitApp);
+} else {
+  runInitApp();
+}
 
 // --- Загрузка config.json ---
 async function loadConfig() {
@@ -40,7 +46,7 @@ async function loadConfig() {
       "owner": {
         "name": "SERQAY",
         "telegram": "serqay",
-        "artstation": "https://artstation.com",
+        "artstation": "",
         "sketchfab": "https://sketchfab.com"
       },
       "hero": {
@@ -113,10 +119,24 @@ function applyConfigToDOM() {
   if (tgLink) tgLink.href = `https://t.me/${config.owner.telegram}`;
 
   const asLink = document.getElementById('contact-artstation-link');
-  if (asLink) asLink.href = config.owner.artstation;
+  if (asLink) {
+    if (config.owner.artstation) {
+      asLink.href = config.owner.artstation;
+      asLink.style.display = 'inline-flex';
+    } else {
+      asLink.style.display = 'none';
+    }
+  }
 
   const sfLink = document.getElementById('contact-sketchfab-link');
-  if (sfLink) sfLink.href = config.owner.sketchfab;
+  if (sfLink) {
+    if (config.owner.sketchfab) {
+      sfLink.href = config.owner.sketchfab;
+      sfLink.style.display = 'inline-flex';
+    } else {
+      sfLink.style.display = 'none';
+    }
+  }
 
   // Подвал
   const footerCopy = document.getElementById('footer-copy-text');
@@ -479,7 +499,7 @@ function initCardTilt() {
   document.addEventListener('mousemove', (e) => {
     if (isEditorMode) return; // Отключаем 3D наклон в режиме редактирования для удобства выделения текста
 
-    const card = e.target.closest('.product-card');
+    const card = e.target.closest('.product-card, .portfolio-item, .contact-info');
     if (!card) return;
 
     const rect = card.getBoundingClientRect();
@@ -489,16 +509,24 @@ function initCardTilt() {
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
 
-    const rotateX = ((centerY - y) / centerY) * 10;
-    const rotateY = ((x - centerX) / centerX) * 10;
+    const rotateX = ((centerY - y) / centerY) * 15; // Увеличен угол до 15 градусов
+    const rotateY = ((x - centerX) / centerX) * 15;
 
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03, 1.03, 1.03)`;
+    // Быстрый и плавный наклон при движении мыши
+    card.style.transition = 'transform 0.08s ease-out';
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.04, 1.04, 1.04)`;
   });
 
   document.addEventListener('mouseout', (e) => {
-    const card = e.target.closest('.product-card');
+    const card = e.target.closest('.product-card, .portfolio-item, .contact-info');
     if (!card) return;
-    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+    
+    // Сбрасываем только если курсор действительно покинул карточку
+    if (!e.relatedTarget || !card.contains(e.relatedTarget)) {
+      // Упругий отскок (back ease out) при возврате в исходное состояние
+      card.style.transition = 'transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+    }
   });
 }
 
@@ -953,6 +981,64 @@ function renderPortfolio(items) {
     track.appendChild(createPortfolioCard(item));
   });
 
+  let position = 0;
+  let targetSpeed = 0.8; // Базовая скорость (пикселей за кадр)
+  let currentSpeed = 0.8;
+  let stopTrainTimeout = null;
+  let isMouseOver = false;
+
+  function animate() {
+    const lightbox = document.getElementById('portfolio-lightbox');
+    const isLightboxActive = lightbox && lightbox.classList.contains('active');
+    
+    if (isLightboxActive) {
+      targetSpeed = 0;
+      currentSpeed = 0; // Мгновенный стоп при открытии лайтбокса
+    } else if (isMouseOver) {
+      // Если мышь наведена (и прошел таймаут в 350мс), targetSpeed станет 0
+    } else {
+      targetSpeed = 0.8;
+    }
+
+    // Плавно приближаем текущую скорость к целевой
+    currentSpeed += (targetSpeed - currentSpeed) * 0.05;
+
+    // Сдвигаем трек
+    position -= currentSpeed;
+
+    // Сбрасываем позицию при достижении половины ширины трека
+    const halfWidth = track.scrollWidth / 2;
+    if (halfWidth > 0 && Math.abs(position) >= halfWidth) {
+      position = 0;
+    }
+
+    track.style.transform = `translate3d(${position}px, 0, 0)`;
+    requestAnimationFrame(animate);
+  }
+
+  // Плавное замедление при наведении с задержкой
+  track.addEventListener('mouseenter', () => {
+    isMouseOver = true;
+    const lightbox = document.getElementById('portfolio-lightbox');
+    if (lightbox && lightbox.classList.contains('active')) return;
+
+    stopTrainTimeout = setTimeout(() => {
+      targetSpeed = 0;
+    }, 350); // 350мс задержки перед началом замедления
+  });
+
+  track.addEventListener('mouseleave', () => {
+    isMouseOver = false;
+    if (stopTrainTimeout) {
+      clearTimeout(stopTrainTimeout);
+      stopTrainTimeout = null;
+    }
+    targetSpeed = 0.8;
+  });
+
+  // Запускаем цикл анимации
+  animate();
+
   // Обновляем список отслеживаемых элементов для scroll-reveal
   if (window.scrollReveal) {
     window.scrollReveal.observeNewElements();
@@ -972,11 +1058,6 @@ function openPortfolioLightbox(item) {
   document.body.style.overflow = 'hidden';
   if (window.soundDesign) window.soundDesign.playModalOpen();
 
-  // Останавливаем движение поезда при просмотре
-  const track = document.querySelector('.portfolio-track');
-  if (track) {
-    track.classList.add('train-stopped');
-  }
 }
 
 // Настройка лайтбокса портфолио
@@ -992,11 +1073,6 @@ function setupPortfolioLightbox() {
         document.body.style.overflow = '';
         if (window.soundDesign) window.soundDesign.playModalClose();
 
-        // Запускаем движение поезда обратно после закрытия
-        const track = document.querySelector('.portfolio-track');
-        if (track) {
-          track.classList.remove('train-stopped');
-        }
       }
     }
   });
@@ -1007,12 +1083,6 @@ function setupPortfolioLightbox() {
       lightbox.classList.remove('active');
       document.body.style.overflow = '';
       if (window.soundDesign) window.soundDesign.playModalClose();
-
-      // Запускаем движение поезда обратно после закрытия
-      const track = document.querySelector('.portfolio-track');
-      if (track) {
-        track.classList.remove('train-stopped');
-      }
     }
   });
 }

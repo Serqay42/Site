@@ -14,22 +14,53 @@ function initAudioContext() {
   }
 }
 
+// Отслеживаем первое взаимодействие пользователя для разблокировки звуков
+function enableAudioOnFirstInteraction() {
+  const initOnGesture = () => {
+    initAudioContext();
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume().catch(err => console.warn('Не удалось возобновить AudioContext:', err));
+    }
+    // Удаляем слушатели после первой инициализации
+    document.removeEventListener('click', initOnGesture);
+    document.removeEventListener('keydown', initOnGesture);
+    document.removeEventListener('touchstart', initOnGesture);
+  };
+
+  document.addEventListener('click', initOnGesture);
+  document.addEventListener('keydown', initOnGesture);
+  document.addEventListener('touchstart', initOnGesture);
+}
+
+enableAudioOnFirstInteraction();
+
 // Воспроизведение звука с помощью переданного генератора
-function playSound(generatorFn) {
+function playSound(generatorFn, isUserGesture = false) {
   if (isMuted) return;
   
-  initAudioContext();
+  if (isUserGesture) {
+    initAudioContext();
+  }
+  
   if (!audioCtx) return;
   
   // Разрешаем воспроизведение, если контекст был приостановлен политикой автоплея
   if (audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
-  
-  try {
-    generatorFn(audioCtx);
-  } catch (error) {
-    console.warn('Ошибка воспроизведения звука:', error);
+    audioCtx.resume().then(() => {
+      try {
+        generatorFn(audioCtx);
+      } catch (error) {
+        console.warn('Ошибка воспроизведения звука:', error);
+      }
+    }).catch(err => {
+      console.warn('Не удалось возобновить AudioContext:', err);
+    });
+  } else {
+    try {
+      generatorFn(audioCtx);
+    } catch (error) {
+      console.warn('Ошибка воспроизведения звука:', error);
+    }
   }
 }
 
@@ -57,7 +88,7 @@ function playHoverTick() {
     
     osc.start(now);
     osc.stop(now + 0.02);
-  });
+  }, false);
 }
 
 // 2. Футуристический клик при нажатии на кнопки
@@ -81,7 +112,7 @@ function playBtnClick() {
     
     osc.start(now);
     osc.stop(now + 0.06);
-  });
+  }, true);
 }
 
 // 3. Восходящий плавный звук при открытии модального окна (Swoop Up)
@@ -113,7 +144,7 @@ function playModalOpen() {
     
     osc.start(now);
     osc.stop(now + duration + 0.02);
-  });
+  }, true);
 }
 
 // 4. Нисходящий плавный звук при закрытии модального окна (Swoop Down)
@@ -143,7 +174,7 @@ function playModalClose() {
     
     osc.start(now);
     osc.stop(now + duration + 0.02);
-  });
+  }, true);
 }
 
 // 5. Мажорное цифровое арпеджио при успешном действии (покупка)
@@ -172,7 +203,7 @@ function playActionSuccess() {
       osc.start(noteStart);
       osc.stop(noteStart + noteDuration + 0.01);
     });
-  });
+  }, true);
 }
 
 // --- Обработка событий и делегирование ---
@@ -254,28 +285,37 @@ function toggleSound() {
   }
 }
 
-// Запуск при загрузке DOM
-document.addEventListener('DOMContentLoaded', () => {
+// Функция инициализации звука при загрузке
+function runSoundInit() {
   const nav = document.querySelector('header nav');
   if (nav) {
-    // Вставляем кнопку переключателя в навигацию
-    const soundBtn = document.createElement('button');
-    soundBtn.id = 'sound-toggle-btn';
-    soundBtn.className = 'sound-btn';
-    soundBtn.setAttribute('aria-label', 'Включить/выключить звук');
-    
-    nav.appendChild(soundBtn);
-    
-    // Привязываем событие клика
-    soundBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      toggleSound();
-    });
+    // Вставляем кнопку переключателя в навигацию, если её ещё нет
+    if (!document.getElementById('sound-toggle-btn')) {
+      const soundBtn = document.createElement('button');
+      soundBtn.id = 'sound-toggle-btn';
+      soundBtn.className = 'sound-btn';
+      soundBtn.setAttribute('aria-label', 'Включить/выключить звук');
+      
+      nav.appendChild(soundBtn);
+      
+      // Привязываем событие клика
+      soundBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleSound();
+      });
+    }
     
     updateSoundToggleButtonUI();
   }
-});
+}
+
+// Запуск при загрузке DOM (или сразу, если DOM уже готов)
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', runSoundInit);
+} else {
+  runSoundInit();
+}
 
 // Экспортируем глобально для использования в app.js
 window.soundDesign = {

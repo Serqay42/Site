@@ -39,11 +39,17 @@ function observeNewElements() {
   });
 }
 
-// Инициализация при загрузке DOM
-document.addEventListener('DOMContentLoaded', () => {
-  // Немного задержим инициализацию, чтобы стили успели примениться корректно
+// Функция запуска инициализации
+function runScrollRevealInit() {
   setTimeout(initScrollReveal, 100);
-});
+}
+
+// Инициализация при загрузке DOM (или сразу, если DOM уже готов)
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', runScrollRevealInit);
+} else {
+  runScrollRevealInit();
+}
 
 // Экспортируем глобально
 window.scrollReveal = {
