@@ -3,72 +3,72 @@
     "id": "portfolio-oketra",
     "title": "Oketra",
     "category": "3D Модель",
-    "image": "assets/renders/render1.png"
+    "image": "assets/renders/render1.webp"
   },
   {
     "id": "portfolio-serqayrend",
     "title": "serqayrend",
     "category": "Рендер",
-    "image": "assets/renders/render2.png"
+    "image": "assets/renders/render2.webp"
   },
   {
     "id": "portfolio-finalrender",
     "title": "FinalRender",
     "category": "Рендер",
-    "image": "assets/renders/render3.png"
+    "image": "assets/renders/render3.webp"
   },
   {
     "id": "portfolio-steveps",
     "title": "StevePS",
     "category": "3D Модель",
-    "image": "assets/renders/render4.png"
+    "image": "assets/renders/render4.webp"
   },
   {
     "id": "portfolio-postermimi",
     "title": "PosterMIMI",
     "category": "Рендер",
-    "image": "assets/renders/render5.png"
+    "image": "assets/renders/render5.webp"
   },
   {
     "id": "portfolio-allayfem",
     "title": "allayFem",
     "category": "3D Модель",
-    "image": "assets/renders/render7.png"
+    "image": "assets/renders/render7.webp"
   },
   {
     "id": "portfolio-homadik",
     "title": "homadikDonatikfix",
     "category": "3D Модель",
-    "image": "assets/renders/render8.png"
+    "image": "assets/renders/render8.webp"
   },
   {
     "id": "portfolio-rushhiper",
     "title": "rushhiper",
     "category": "Рендер",
-    "image": "assets/renders/render9.png"
+    "image": "assets/renders/render9.webp"
   },
   {
     "id": "portfolio-secret",
     "title": "secret render",
     "category": "Рендер",
-    "image": "assets/renders/render10.png"
+    "image": "assets/renders/render10.webp"
   },
   {
     "id": "portfolio-spice42",
     "title": "Spice42",
     "category": "3D Модель",
-    "image": "assets/renders/Spice42 1.png"
+    "image": "assets/renders/Spice42 1.webp"
   },
   {
     "id": "portfolio-gorse",
     "title": "render gorse",
     "category": "Рендер",
-    "image": "assets/renders/Untitled42 1.png"
+    "image": "assets/renders/Untitled42 1.webp"
   },
   {
     "id": "portfolio-megabox",
     "title": "MegaBox",
     "category": "3D Модель",
-    "image": "assets/renders/Тайна мощне сиське 1 (2).png"
+    "image": "assets/renders/Тайна мощне сиське 1 (2).webp"
   }
 ]

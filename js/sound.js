@@ -292,24 +292,39 @@ document.addEventListener('click', (e) => {
 
 function updateSoundToggleButtonUI() {
   const btn = document.getElementById('sound-toggle-btn');
-  if (!btn) return;
+  const mobileBtn = document.getElementById('mobile-sound-toggle');
+  
+  const mutedSvg = `
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="1" y1="1" x2="23" y2="23"></line>
+      <path d="M9 9v6a3 3 0 0 0 3 3h1.586l4.707 4.707A1 1 0 0 0 20 22V4a1 1 0 0 0-1.707-.707L13.586 8H12a3 3 0 0 0-3 3z"></path>
+    </svg>
+  `;
+  const unmutedSvg = `
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+    </svg>
+  `;
   
   if (isMuted) {
-    btn.classList.add('sound-muted');
-    btn.innerHTML = `
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="1" y1="1" x2="23" y2="23"></line>
-        <path d="M9 9v6a3 3 0 0 0 3 3h1.586l4.707 4.707A1 1 0 0 0 20 22V4a1 1 0 0 0-1.707-.707L13.586 8H12a3 3 0 0 0-3 3z"></path>
-      </svg>
-    `;
+    if (btn) {
+      btn.classList.add('sound-muted');
+      btn.innerHTML = mutedSvg;
+    }
+    if (mobileBtn) {
+      mobileBtn.classList.add('sound-muted');
+      mobileBtn.innerHTML = mutedSvg + '<span>Звук</span>';
+    }
   } else {
-    btn.classList.remove('sound-muted');
-    btn.innerHTML = `
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-      </svg>
-    `;
+    if (btn) {
+      btn.classList.remove('sound-muted');
+      btn.innerHTML = unmutedSvg;
+    }
+    if (mobileBtn) {
+      mobileBtn.classList.remove('sound-muted');
+      mobileBtn.innerHTML = unmutedSvg + '<span>Звук</span>';
+    }
   }
 }
 
@@ -345,9 +360,19 @@ function runSoundInit() {
         toggleSound();
       });
     }
-    
-    updateSoundToggleButtonUI();
   }
+  
+  // Настройка мобильного переключателя звука
+  const mobileBtn = document.getElementById('mobile-sound-toggle');
+  if (mobileBtn) {
+    mobileBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleSound();
+    });
+  }
+  
+  updateSoundToggleButtonUI();
 }
 
 // Запуск при загрузке DOM (или сразу, если DOM уже готов)

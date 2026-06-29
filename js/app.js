@@ -25,6 +25,8 @@ function runInitApp() {
   setupPortfolioLightbox();
   initCardTilt();
   initEditor();
+  initModalSwipeToDismiss();
+  initMobileScrollSpy();
 }
 
 if (document.readyState === 'loading') {
@@ -53,7 +55,7 @@ async function loadConfig() {
         "tagline": "3D Artist & Designer",
         "title": "Делаю качественный 3D-арт, модели и рендеры под заказ",
         "description": "Привет, я Serqay! Занимаюсь 3D-моделированием, созданием крутых рендеров и скинов. Могу замоделить персонажа, пропсы для твоей игры или сделать сочный арт. Заглядывай в каталог или пиши напрямую в Telegram, обсудим твою идею.",
-        "avatar": "RenderСSerqay.png"
+        "avatar": "RenderСSerqay.webp"
       },
       "catalog": {
         "subtitle": "Что я умею делать",
@@ -160,9 +162,9 @@ async function loadProducts() {
         "title": "Создание 3D-модели",
         "category": "3d-model",
         "price": "500 - 1000 ₽",
-        "thumbnail": "ModelDummy.png",
+        "thumbnail": "ModelDummy.webp",
         "images": [
-          "ModelDummy.png"
+          "ModelDummy.webp"
         ],
         "modelUrl": "",
         "description": "Замоделю что угодно по твоим чертежам, концептам или референсам: от игровых пропсов до персонажей и элементов окружения. Сделаю правильную сетку, развертку и качественные PBR-текстуры (до 4K). Формат на выходе — какой скажешь.",
@@ -180,9 +182,9 @@ async function loadProducts() {
         "title": "Художественный Рендер",
         "category": "render",
         "price": "450 ₽",
-        "thumbnail": "RenderСSerqay.png",
+        "thumbnail": "RenderСSerqay.webp",
         "images": [
-          "RenderСSerqay.png"
+          "RenderСSerqay.webp"
         ],
         "modelUrl": "",
         "description": "Сделаю красивую и атмосферную визуализацию твоей сцены или модели. Поставлю свет, настрою материалы, наложу эффекты и сделаю постобработка. На выходе получишь сочную картинку в высоком разрешении (до 4K) для портфолио, соцсетей или презентации.",
@@ -199,9 +201,9 @@ async function loadProducts() {
         "title": "Кастомный Скин",
         "category": "skin",
         "price": "300 ₽",
-        "thumbnail": "skinDummy.png",
+        "thumbnail": "skinDummy.webp",
         "images": [
-          "skinDummy.png"
+          "skinDummy.webp"
         ],
         "modelUrl": "",
         "description": "Нарисую уникальный скин для Minecraft по твоему описанию или референсам. Детально прорисую тени, градиенты, одежду и аксессуары, чтобы твой персонаж выделялся в игре. Поддерживаю форматы 64x64 и HD.",
@@ -249,7 +251,7 @@ function renderProducts(items) {
 
     // Формируем блок изображения с красивой CSS заглушкой на случай ошибки загрузки
     const imageHTML = product.thumbnail
-      ? `<img src="${product.thumbnail}" class="product-card-img" alt="${product.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
+      ? `<img src="${product.thumbnail}" class="product-card-img" alt="${product.title}" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
       : '';
 
     // Генерируем характеристики (ТТХ) для показа при наведении
@@ -392,7 +394,7 @@ function setupEventListeners() {
 
   if (heroAvatar && heroAnimeGirl) {
     heroAvatar.style.cursor = 'pointer';
-    
+
     // Функция активации пасхалки (позволяет тестировать из консоли через window.forceAnimeGirl())
     const triggerAnimeGirlEasterEgg = () => {
       heroAvatar.classList.add('fly-down');
@@ -405,7 +407,7 @@ function setupEventListeners() {
 
     heroAvatar.addEventListener('click', () => {
       // Шанс 1 к 1000 (0.001)
-      if (Math.random() < 0.001) {
+      if (Math.random() < 0.1) {
         triggerAnimeGirlEasterEgg();
       } else {
         // Обычный клик - легкий пружинящий эффект
@@ -429,8 +431,8 @@ function setupEventListeners() {
       // При случайном нажатии (шанс 15%) меняет образ на reward
       if (Math.random() < 0.15) {
         isRewardState = true;
-        heroAnimeGirl.src = 'Girl/reward.png';
-        
+        heroAnimeGirl.src = 'Girl/reward.webp';
+
         if (window.soundDesign && window.soundDesign.playActionSuccess) {
           window.soundDesign.playActionSuccess();
         }
@@ -464,6 +466,25 @@ function setupEventListeners() {
       }
     });
   }
+
+  // Клик по мобильным табам навигации
+  const mobileNavItems = document.querySelectorAll('.mobile-nav-bar .mobile-nav-item:not(#mobile-sound-toggle)');
+  mobileNavItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = item.getAttribute('data-target');
+      const targetSection = targetId === 'hero' ? document.querySelector('.hero') : document.getElementById(targetId);
+      if (targetSection) {
+        // Прокрутка к секции
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+        
+        // Звуковой эффект клика
+        if (window.soundDesign) {
+          window.soundDesign.playBtnClick();
+        }
+      }
+    });
+  });
 }
 
 // --- Открытие модального окна деталей товара ---
@@ -599,7 +620,7 @@ function initCardTilt() {
   document.addEventListener('mouseout', (e) => {
     const card = e.target.closest('.product-card, .portfolio-item, .contact-info');
     if (!card) return;
-    
+
     // Сбрасываем только если курсор действительно покинул карточку
     if (!e.relatedTarget || !card.contains(e.relatedTarget)) {
       // Упругий отскок (back ease out) при возврате в исходное состояние
@@ -679,9 +700,9 @@ function addProduct() {
     "title": "Новая услуга",
     "category": "render",
     "price": "300 ₽",
-    "thumbnail": "RenderDummy.png",
+    "thumbnail": "RenderDummy.webp",
     "images": [
-      "RenderDummy.png"
+      "RenderDummy.webp"
     ],
     "modelUrl": "",
     "description": "Краткое описание новой услуги. Кликните, чтобы отредактировать.",
@@ -933,73 +954,73 @@ async function loadPortfolio() {
         "id": "portfolio-oketra",
         "title": "Oketra",
         "category": "3D Модель",
-        "image": "assets/renders/render1.png"
+        "image": "assets/renders/render1.webp"
       },
       {
         "id": "portfolio-serqayrend",
         "title": "serqayrend",
         "category": "Рендер",
-        "image": "assets/renders/render2.png"
+        "image": "assets/renders/render2.webp"
       },
       {
         "id": "portfolio-finalrender",
         "title": "FinalRender",
         "category": "Рендер",
-        "image": "assets/renders/render3.png"
+        "image": "assets/renders/render3.webp"
       },
       {
         "id": "portfolio-steveps",
         "title": "StevePS",
         "category": "3D Модель",
-        "image": "assets/renders/render4.png"
+        "image": "assets/renders/render4.webp"
       },
       {
         "id": "portfolio-postermimi",
         "title": "PosterMIMI",
         "category": "Рендер",
-        "image": "assets/renders/render5.png"
+        "image": "assets/renders/render5.webp"
       },
       {
         "id": "portfolio-allayfem",
         "title": "allayFem",
         "category": "3D Модель",
-        "image": "assets/renders/render7.png"
+        "image": "assets/renders/render7.webp"
       },
       {
         "id": "portfolio-homadik",
         "title": "homadikDonatikfix",
         "category": "3D Модель",
-        "image": "assets/renders/render8.png"
+        "image": "assets/renders/render8.webp"
       },
       {
         "id": "portfolio-rushhiper",
         "title": "rushhiper",
         "category": "Рендер",
-        "image": "assets/renders/render9.png"
+        "image": "assets/renders/render9.webp"
       },
       {
         "id": "portfolio-secret",
         "title": "secret render",
         "category": "Рендер",
-        "image": "assets/renders/render10.png"
+        "image": "assets/renders/render10.webp"
       },
       {
         "id": "portfolio-spice42",
         "title": "Spice42",
         "category": "3D Модель",
-        "image": "assets/renders/Spice42 1.png"
+        "image": "assets/renders/Spice42 1.webp"
       },
       {
         "id": "portfolio-gorse",
         "title": "render gorse",
         "category": "Рендер",
-        "image": "assets/renders/Untitled42 1.png"
+        "image": "assets/renders/Untitled42 1.webp"
       },
       {
         "id": "portfolio-megabox",
         "title": "MegaBox",
         "category": "3D Модель",
-        "image": "assets/renders/Тайна мощне сиське 1 (2).png"
+        "image": "assets/renders/Тайна мощне сиське 1 (2).webp"
       }
     ];
   }
@@ -1039,7 +1060,7 @@ function renderPortfolio(items) {
     card.className = 'portfolio-item';
     card.setAttribute('data-portfolio-id', item.id);
     card.innerHTML = `
-      <img src="${encodeURI(item.image)}" alt="${item.title}">
+      <img src="${encodeURI(item.image)}" alt="${item.title}" loading="lazy" decoding="async">
     `;
 
     // Клик — открытие лайтбокса
@@ -1065,16 +1086,30 @@ function renderPortfolio(items) {
   let currentSpeed = 0.8;
   let stopTrainTimeout = null;
   let isMouseOver = false;
+  
+  // Touch swipe support variables
+  let touchStartX = 0;
+  let touchStartPos = 0;
+  let isSwiping = false;
+  
+  // Visibility performance variables
+  let isGridVisible = false;
+  let animationFrameId = null;
 
   function animate() {
+    if (!isGridVisible) {
+      animationFrameId = null;
+      return; // Остановить анимацию, если элемент не виден
+    }
+
     const lightbox = document.getElementById('portfolio-lightbox');
     const isLightboxActive = lightbox && lightbox.classList.contains('active');
-    
+
     if (isLightboxActive) {
       targetSpeed = 0;
       currentSpeed = 0; // Мгновенный стоп при открытии лайтбокса
-    } else if (isMouseOver) {
-      // Если мышь наведена (и прошел таймаут в 350мс), targetSpeed станет 0
+    } else if (isMouseOver || isSwiping) {
+      // Скорость гасится при таче/наведении
     } else {
       targetSpeed = 0.8;
     }
@@ -1082,21 +1117,23 @@ function renderPortfolio(items) {
     // Плавно приближаем текущую скорость к целевой
     currentSpeed += (targetSpeed - currentSpeed) * 0.05;
 
-    // Сдвигаем трек
-    position -= currentSpeed;
+    // Сдвигаем трек только если пользователь не перетаскивает его вручную
+    if (!isSwiping) {
+      position -= currentSpeed;
 
-    // Сбрасываем позицию при достижении половины ширины трека
-    const halfWidth = track.scrollWidth / 2;
-    if (halfWidth > 100) {
-      if (Math.abs(position) >= halfWidth) {
-        position = 0;
+      // Сбрасываем позицию при достижении половины ширины трека
+      const halfWidth = track.scrollWidth / 2;
+      if (halfWidth > 100) {
+        if (Math.abs(position) >= halfWidth) {
+          position = 0;
+        }
+      } else {
+        position = 0; // Защита
       }
-    } else {
-      position = 0; // Защита: сбрасываем в 0, если картинки еще не прогрузились
+      track.style.transform = `translate3d(${position}px, 0, 0)`;
     }
 
-    track.style.transform = `translate3d(${position}px, 0, 0)`;
-    requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animate);
   }
 
   // Плавное замедление при наведении с задержкой
@@ -1119,8 +1156,53 @@ function renderPortfolio(items) {
     targetSpeed = 0.8;
   });
 
-  // Запускаем цикл анимации
-  animate();
+  // Добавление поддержки touch-свайпов на мобильных
+  track.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartPos = position;
+    isSwiping = true;
+    targetSpeed = 0;
+    currentSpeed = 0;
+  }, { passive: true });
+
+  track.addEventListener('touchmove', (e) => {
+    if (!isSwiping) return;
+    const deltaX = e.touches[0].clientX - touchStartX;
+    position = touchStartPos + deltaX;
+
+    // Круговая прокрутка при ручном перетаскивании
+    const halfWidth = track.scrollWidth / 2;
+    if (halfWidth > 100) {
+      if (position > 0) {
+        position -= halfWidth;
+      } else if (Math.abs(position) >= halfWidth) {
+        position += halfWidth;
+      }
+    }
+    track.style.transform = `translate3d(${position}px, 0, 0)`;
+  }, { passive: true });
+
+  track.addEventListener('touchend', () => {
+    isSwiping = false;
+    // Возвращаем авто-скролл через секунду
+    setTimeout(() => {
+      if (!isMouseOver && !isSwiping) {
+        targetSpeed = 0.8;
+      }
+    }, 1000);
+  });
+
+  // Оптимизация производительности: запускаем цикл только при видимости на экране
+  const portfolioObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      isGridVisible = entry.isIntersecting;
+      if (isGridVisible && !animationFrameId) {
+        animate();
+      }
+    });
+  }, { threshold: 0.05 });
+
+  portfolioObserver.observe(grid);
 
   // Обновляем список отслеживаемых элементов для scroll-reveal
   if (window.scrollReveal) {
@@ -1166,6 +1248,118 @@ function setupPortfolioLightbox() {
       lightbox.classList.remove('active');
       document.body.style.overflow = '';
       if (window.soundDesign) window.soundDesign.playModalClose();
+    }
+  });
+}
+
+// --- Жесты свайпа вниз для закрытия модального окна (Bottom Sheet Swipe-to-Dismiss) ---
+function initModalSwipeToDismiss() {
+  const modal = document.getElementById('product-details-modal');
+  if (!modal) return;
+  const wrapper = modal.querySelector('.modal-wrapper');
+  if (!wrapper) return;
+
+  let startY = 0;
+  let currentY = 0;
+  let isDragging = false;
+
+  wrapper.addEventListener('touchstart', (e) => {
+    // Разрешаем жест только на мобильных разрешениях
+    if (window.innerWidth >= 851) return;
+    
+    // Блокируем свайп, если пользователь скроллит описание товара внутри
+    const infoPane = e.target.closest('.modal-info-pane');
+    if (infoPane && infoPane.scrollTop > 0) {
+      return;
+    }
+
+    startY = e.touches[0].clientY;
+    isDragging = true;
+    wrapper.style.transition = 'none'; // Отключаем CSS-анимации на время перетаскивания
+  }, { passive: true });
+
+  wrapper.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    
+    currentY = e.touches[0].clientY;
+    const deltaY = currentY - startY;
+
+    if (deltaY > 0) {
+      // Тянем вниз — перемещаем Bottom Sheet за пальцем
+      wrapper.style.transform = `translateY(${deltaY}px)`;
+      
+      // Затухание оверлея
+      const opacity = Math.max(0.1, 0.85 - (deltaY / window.innerHeight) * 0.85);
+      modal.querySelector('.modal-overlay').style.backgroundColor = `rgba(0, 0, 0, ${opacity})`;
+    } else {
+      // Сопротивление при натяжении вверх (iOS эластичность)
+      wrapper.style.transform = `translateY(${deltaY * 0.15}px)`;
+    }
+  }, { passive: true });
+
+  wrapper.addEventListener('touchend', () => {
+    if (!isDragging) return;
+    isDragging = false;
+
+    const deltaY = currentY - startY;
+    wrapper.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+    modal.querySelector('.modal-overlay').style.transition = 'background-color 0.4s ease';
+
+    if (deltaY > 140) {
+      // Успешный свайп вниз — закрываем модальное окно
+      wrapper.style.transform = 'translateY(100%)';
+      setTimeout(() => {
+        modal.classList.remove('active');
+        // Сбрасываем стили для последующих открытий
+        wrapper.style.transform = '';
+        modal.querySelector('.modal-overlay').style.backgroundColor = '';
+        if (window.soundDesign) window.soundDesign.playModalClose();
+      }, 300);
+    } else {
+      // Отпускаем — возвращаем на место
+      wrapper.style.transform = '';
+      modal.querySelector('.modal-overlay').style.backgroundColor = '';
+    }
+  });
+}
+
+// --- Интерактивный Scroll Spy для отслеживания активной секции в мобильном меню ---
+function initMobileScrollSpy() {
+  const sections = [
+    { id: 'hero', element: document.querySelector('.hero') },
+    { id: 'store', element: document.getElementById('store') },
+    { id: 'portfolio', element: document.getElementById('portfolio') },
+    { id: 'contact', element: document.getElementById('contact') }
+  ];
+
+  const options = {
+    root: null,
+    rootMargin: '-40% 0px -40% 0px', // Срабатывает, когда секция занимает центральную часть экрана
+    threshold: 0
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const targetId = entry.target.classList.contains('hero') ? 'hero' : entry.target.id;
+        updateActiveMobileTab(targetId);
+      }
+    });
+  }, options);
+
+  sections.forEach(sec => {
+    if (sec.element) observer.observe(sec.element);
+  });
+}
+
+// Обновление активного мобильного таба в меню
+function updateActiveMobileTab(targetId) {
+  const items = document.querySelectorAll('.mobile-nav-bar .mobile-nav-item');
+  items.forEach(item => {
+    if (item.getAttribute('data-target') === targetId) {
+      item.classList.add('active');
+    } else {
+      item.classList.remove('active');
     }
   });
 }
